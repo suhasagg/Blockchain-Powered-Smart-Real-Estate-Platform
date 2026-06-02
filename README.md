@@ -255,30 +255,6 @@ npm run dev:full
 npm run build
 ```
 
-## Files added or heavily modified
-
-```text
-src/data/platform.js
-src/hooks/useWallet.js
-src/components/ui.jsx
-src/components/layout/Navbar.jsx
-src/components/layout/Footer.jsx
-src/pages/Home.jsx
-src/pages/Properties.jsx
-src/pages/PropertyDetail.jsx
-src/pages/Dashboard.jsx
-src/pages/Marketplace.jsx
-src/pages/Admin.jsx
-src/pages/Roadmap.jsx
-src/pages/Property3D.jsx
-src/App.jsx
-src/index.css
-server/app.js
-server/server.js
-server/config/config.env.example
-README.md
-```
-
 ## Important production notes
 
 Before using it for real investments, add:
