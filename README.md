@@ -257,20 +257,6 @@ npm run dev:full
 npm run build
 ```
 
-## Important production notes
-
-This ZIP is a strong UI and architecture upgrade, but it is still a frontend/demo implementation. Before using it for real investments, add:
-
-- Real wallet provider integration.
-- Real smart contracts.
-- Contract tests and audits.
-- KYC/AML provider integration.
-- Jurisdiction-specific legal review.
-- Real backend persistence.
-- Real event indexer.
-- Real document storage and on-chain hash anchoring.
-- Security hardening and observability.
-
 ## Suggested next engineering tasks
 
 1. Implement MetaMask and WalletConnect with real provider state.
