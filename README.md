@@ -1,12 +1,25 @@
 # EstateFi — Blockchain-Powered Smart Real Estate Platform
 
-EstateFi is a refined Web3 real estate investment website.
+EstateFi is a refined Web3 real estate investment website built from the supplied MVP and upgraded with the features requested across the three attached documents. The new version modernizes the layout and adds product sections for fractional investment, NFT property ownership, wallet flow, rental payouts, secondary marketplace liquidity, compliance, admin operations, event indexing, AI recommendations, and a production roadmap.
 
-### frontend pages
+## What changed in this ZIP
+
+### UI / layout refinement
+
+- Rebranded the website from `RoyalCity` to `EstateFi`.
+- Added a premium glassmorphism visual language, softer cards, stronger spacing, improved hero section, cleaner typography and better CTA hierarchy.
+- Added sticky blurred navigation and new top-level routes.
+- Added route-level transitions using `AnimatePresence`.
+- Added animated funding progress bars.
+- Improved the 3D model loading screen from plain `Please wait...` to a branded 3D viewer loader.
+- Added `prefers-reduced-motion` CSS support for accessibility.
+- Improved property cards with ROI, chain, risk, token price, available tokens, smart-home NFT access badges and funding progress.
+
+### New frontend pages
 
 | Route | Purpose |
 |---|---|
-| `/` | New homepage explaining RealFraction, investment flow, featured opportunities and roadmap |
+| `/` | New homepage explaining EstateFi, investment flow, featured opportunities and roadmap |
 | `/properties` | Tokenized property marketplace with filters and polished cards |
 | `/properties/:id` | Detailed investment page with simulator, wallet call-to-action, documents, risk, token model and transaction states |
 | `/dashboard` | Investor portfolio dashboard with owned tokens, payouts, documents and resale action |
@@ -51,7 +64,7 @@ EstateFi is a refined Web3 real estate investment website.
 - Cloudinary config
 - Existing API route structure
 - Added `/health` endpoint
-- Added `.env` example for RealFraction settings
+- Added `.env` example for EstateFi settings
 - Database connection now activates only when `MONGO_URI` or `DB_URI` is set
 
 ### Web3 direction
@@ -225,7 +238,7 @@ cp server/config/config.env.example server/config/config.env
 Set at least:
 
 ```env
-MONGO_URI=mongodb://127.0.0.1:27017/realfraction
+MONGO_URI=mongodb://127.0.0.1:27017/estatefi
 JWT_SECRET=replace-with-a-long-random-secret
 ```
 
@@ -314,7 +327,7 @@ Open Property Detail
   -> MetaMask / injected wallet opens
   -> App validates the configured chain
   -> App requests network switch if needed
-  -> User signs a RealFraction investment-intent message
+  -> User signs a EstateFi investment-intent message
   -> Signed receipt is stored in localStorage
   -> UI shows confirmed status and lets the user copy the receipt
 ```

@@ -19,7 +19,7 @@ function Home() {
         <motion.div initial={{opacity:0,y:24}} animate={{opacity:1,y:0}} transition={{duration:.7}}>
           <p className="inline-flex px-4 py-2 rounded-full bg-white/10 border border-white/15 text-sm font-bold backdrop-blur">Smart real estate ownership infrastructure</p>
           <h1 className="mt-6 text-5xl md:text-7xl font-black tracking-tight leading-tight">Tokenize, invest, rent, auction, and manage property in one premium Web3 platform.</h1>
-          <p className="mt-6 text-xl text-white/75 max-w-2xl">RealFraction combines automated documents, NFT property control, fractional ownership, rental payouts, secondary trading, staking, smart-home access, and compliance-ready workflows.</p>
+          <p className="mt-6 text-xl text-white/75 max-w-2xl">EstateFi combines automated documents, NFT property control, fractional ownership, rental payouts, secondary trading, staking, smart-home access, and compliance-ready workflows.</p>
           <div className="mt-8 flex flex-wrap gap-4"><Link to="/properties" className="btn text-base px-6 py-3">Explore Properties <FiArrowRight className="ml-2"/></Link><Link to="/dashboard" className="btn-secondary text-base px-6 py-3">Investor Dashboard</Link></div>
         </motion.div>
         <motion.div initial={{opacity:0,scale:.96}} animate={{opacity:1,scale:1}} className="glass-dark p-6 md:p-8">

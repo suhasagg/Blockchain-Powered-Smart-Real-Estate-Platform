@@ -31,7 +31,7 @@ function shortAddress(address) {
 
 function buildInvestmentMessage({ account, chainId, property, quantity, totalUsd }) {
   return [
-    'RealFraction Investment Intent',
+    'EstateFi Investment Intent',
     '',
     `Wallet: ${account}`,
     `Chain ID: ${chainId || 'demo'}`,
@@ -179,7 +179,7 @@ export function useWallet() {
         setSignature(signed);
         setTxState('confirmed');
         const receipt = { mode: 'demo-signed-intent', propertyId: property.id, propertyTitle: property.title, tokenSymbol: property.tokenSymbol, quantity, totalUsd, wallet: DEMO_ADDRESS, signature: signed, message, createdAt: new Date().toISOString() };
-        localStorage.setItem('realfraction:lastInvestmentIntent', JSON.stringify(receipt));
+        localStorage.setItem('estatefi:lastInvestmentIntent', JSON.stringify(receipt));
         setInvestmentReceipt(receipt);
         return receipt;
       }
@@ -244,14 +244,14 @@ export function useWallet() {
         const receipt = await tx.wait(1);
         setTxState('confirmed');
         const finalReceipt = { mode: hasAddress(PAYMENT_TOKEN_ADDRESS) ? 'contract-usdc-investment' : 'contract-native-investment', contract: INVESTMENT_CONTRACT_ADDRESS, propertyId: property.id, quantity, totalUsd, txHash: receipt.transactionHash, signature: signed, blockNumber: receipt.blockNumber, createdAt: new Date().toISOString() };
-        localStorage.setItem('realfraction:lastInvestmentIntent', JSON.stringify(finalReceipt));
+        localStorage.setItem('estatefi:lastInvestmentIntent', JSON.stringify(finalReceipt));
         setInvestmentReceipt(finalReceipt);
         return finalReceipt;
       }
 
       setTxState('confirmed');
       const localReceipt = { mode: 'wallet-signed-intent', propertyId: property.id, propertyTitle: property.title, tokenSymbol: property.tokenSymbol, quantity, totalUsd, wallet: signerAddress, chainId: activeChainId, signature: signed, message, createdAt: new Date().toISOString() };
-      localStorage.setItem('realfraction:lastInvestmentIntent', JSON.stringify(localReceipt));
+      localStorage.setItem('estatefi:lastInvestmentIntent', JSON.stringify(localReceipt));
       setInvestmentReceipt(localReceipt);
       return localReceipt;
     } catch (err) {

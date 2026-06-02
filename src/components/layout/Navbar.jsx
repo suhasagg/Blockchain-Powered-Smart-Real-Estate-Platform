@@ -22,7 +22,7 @@ function Navbar() {
         <div className="flex justify-between h-18 py-3">
           <Link to="/" className="flex items-center gap-2">
             <span className="h-10 w-10 rounded-2xl bg-gradient-to-br from-primary-600 to-blue-400 grid place-items-center shadow-lg shadow-blue-200"><span className="h-4 w-4 rounded-full border-4 border-white" /></span>
-            <span className="text-2xl font-black tracking-tight text-secondary-950">RealFraction</span>
+            <span className="text-2xl font-black tracking-tight text-secondary-950">EstateFi</span>
           </Link>
           <div className="hidden lg:flex items-center gap-1">
             {navigation.map((item) => <NavLink key={item.name} to={item.href} className={linkClass}>{item.name}</NavLink>)}

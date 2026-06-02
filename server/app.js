@@ -10,7 +10,7 @@ app.use(express.json());
 app.use(cookieParser());
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(fileUpload());
-app.get('/health', (req, res) => res.json({ status: 'UP', service: 'RealFraction API', db: Boolean(process.env.MONGO_URI || process.env.DB_URI) }));
+app.get('/health', (req, res) => res.json({ status: 'UP', service: 'EstateFi API', db: Boolean(process.env.MONGO_URI || process.env.DB_URI) }));
 
 const user = require('./routes/userRoute');
 const product = require('./routes/productRoute');
