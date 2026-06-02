@@ -1,5 +1,7 @@
 # RealFraction — Blockchain-Powered Smart Real Estate Platform
 
+Demo video - https://www.loom.com/share/fa1d5210ad10401a896be62b197f8a52
+
 RealFraction is a refined Web3 real estate investment website. This version modernizes the layout and adds product sections for fractional investment, NFT property ownership, wallet flow, rental payouts, secondary marketplace liquidity, compliance, admin operations, event indexing, AI recommendations, and a production roadmap.
 
 ### New frontend pages
