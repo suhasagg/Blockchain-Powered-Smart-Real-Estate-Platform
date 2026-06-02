@@ -2,18 +2,7 @@
 
 EstateFi is a refined Web3 real estate investment website built from the supplied MVP and upgraded with the features requested across the three attached documents. The new version modernizes the layout and adds product sections for fractional investment, NFT property ownership, wallet flow, rental payouts, secondary marketplace liquidity, compliance, admin operations, event indexing, AI recommendations, and a production roadmap.
 
-## What changed in this ZIP
 
-### UI / layout refinement
-
-- Rebranded the website from `RoyalCity` to `RealFraction`.
-- Added a premium glassmorphism visual language, softer cards, stronger spacing, improved hero section, cleaner typography and better CTA hierarchy.
-- Added sticky blurred navigation and new top-level routes.
-- Added route-level transitions using `AnimatePresence`.
-- Added animated funding progress bars.
-- Improved the 3D model loading screen from plain `Please wait...` to a branded 3D viewer loader.
-- Added `prefers-reduced-motion` CSS support for accessibility.
-- Improved property cards with ROI, chain, risk, token price, available tokens, smart-home NFT access badges and funding progress.
 
 ### New frontend pages
 
