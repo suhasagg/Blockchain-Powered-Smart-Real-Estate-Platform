@@ -1,0 +1,31 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap');
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  html { scroll-behavior: smooth; }
+  body { @apply font-sans text-secondary-800 bg-secondary-50; font-family: 'Inter', system-ui, sans-serif; }
+  ::selection { @apply bg-primary-200 text-primary-950; }
+}
+
+@layer components {
+  .container { @apply max-w-7xl mx-auto px-4 sm:px-6 lg:px-8; }
+  .btn { @apply inline-flex items-center px-4 py-2 border border-transparent text-sm font-bold rounded-full shadow-lg shadow-blue-100 text-white bg-primary-600 hover:bg-primary-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary-500 transition; }
+  .btn-secondary { @apply inline-flex items-center px-4 py-2 border border-primary-100 text-sm font-bold rounded-full text-primary-700 bg-white hover:bg-primary-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary-500 transition; }
+  .input { @apply block rounded-2xl border-secondary-200 shadow-sm focus:border-primary-500 focus:ring-primary-500 text-sm; }
+  .card { @apply bg-white rounded-3xl shadow-md overflow-hidden; }
+  .glass-card { @apply rounded-[1.75rem] bg-white/80 border border-white/80 shadow-xl shadow-secondary-200/60 backdrop-blur-xl; }
+  .glass-dark { @apply rounded-[2rem] bg-white/10 border border-white/15 shadow-2xl backdrop-blur-xl; }
+  .badge { @apply inline-flex items-center gap-1 px-3 py-1 rounded-full text-xs font-extrabold bg-primary-50 text-primary-700; }
+  .property-card { @apply rounded-[2rem] bg-white shadow-xl shadow-secondary-200/70 overflow-hidden border border-white hover:-translate-y-1 hover:shadow-2xl transition duration-300; }
+  .feature-pill { @apply flex items-center gap-3 rounded-2xl bg-white border border-secondary-100 p-4 font-semibold text-secondary-700 shadow-sm; }
+  .bg-page { background: radial-gradient(circle at top left, rgba(6,130,255,.11), transparent 34rem), linear-gradient(180deg,#f8fbff 0%,#f6f7fb 100%); }
+  .hero-shell { @apply relative min-h-[720px] flex items-center overflow-hidden; }
+  .property-card b { @apply block text-secondary-950; }
+  .property-card span { @apply block text-xs text-secondary-500; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after { animation-duration: 0.01ms !important; animation-iteration-count: 1 !important; scroll-behavior: auto !important; transition-duration: 0.01ms !important; }
+}

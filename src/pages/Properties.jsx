@@ -1,0 +1,14 @@
+import { useMemo, useState } from 'react';
+import { Link } from 'react-router-dom';
+import { FiSearch, FiSliders, FiArrowRight } from 'react-icons/fi';
+import { FaKey } from 'react-icons/fa';
+import { properties } from '../data/platform';
+import { ProgressBar, SectionHeader } from '../components/ui';
+
+function Properties() {
+  const [query,setQuery]=useState(''); const [risk,setRisk]=useState('All');
+  const filtered=useMemo(()=>properties.filter(p=>(risk==='All'||p.risk===risk)&&`${p.title} ${p.location} ${p.type}`.toLowerCase().includes(query.toLowerCase())),[query,risk]);
+  return <div className="bg-page min-h-screen"><section className="container py-16"><SectionHeader eyebrow="Properties" title="Tokenized real estate marketplace" description="Browse buy, rent, auction and fractional ownership-ready properties with dynamic investment metrics."/><div className="glass-card p-4 flex flex-col md:flex-row gap-4 mb-8"><label className="flex-1 flex items-center gap-3 px-4 py-3 rounded-2xl bg-white border"><FiSearch/><input value={query} onChange={e=>setQuery(e.target.value)} placeholder="Search by property, city or type" className="outline-none flex-1"/></label><div className="flex items-center gap-3"><FiSliders/><select value={risk} onChange={e=>setRisk(e.target.value)} className="input min-w-36"><option>All</option><option>Low</option><option>Medium</option></select></div></div><div className="grid lg:grid-cols-3 gap-8">{filtered.map(p=><div key={p.id} className="property-card"><div className="relative overflow-hidden"><img src={p.image} className="h-60 w-full object-cover hover:scale-105 transition duration-700"/><div className="absolute top-4 left-4 badge bg-white/90">{p.type}</div>{p.smartHome&&<div className="absolute top-4 right-4 badge bg-primary-600 text-white"><FaKey/> NFT Access</div>}</div><div className="p-6"><h3 className="text-2xl font-black">{p.title}</h3><p className="text-secondary-500">{p.location}</p><div className="grid grid-cols-2 gap-3 my-5"><Info label="Price" value={`$${p.priceUsd.toLocaleString()}`}/><Info label="Token" value={`$${p.tokenPrice}`}/><Info label="ROI" value={`${p.annualRoi}%`}/><Info label="Liquidity" value={`${p.liquidityScore}/100`}/></div><ProgressBar value={p.funded}/><div className="flex justify-between mt-2 text-sm text-secondary-500"><span>{p.funded}% funded</span><span>{p.availableTokens.toLocaleString()} left</span></div><Link to={`/properties/${p.id}`} className="btn w-full justify-center mt-6">View investment details <FiArrowRight className="ml-2"/></Link></div></div>)}</div></section></div>;
+}
+function Info({label,value}){return <div className="rounded-2xl bg-secondary-50 p-4"><p className="text-xs text-secondary-500">{label}</p><b className="text-secondary-950">{value}</b></div>}
+export default Properties;
