@@ -313,8 +313,6 @@ Troubleshooting:
 
 ## Integrated Smart Contracts
 
-This ZIP now includes a full Hardhat smart-contract workspace in:
-
 ```bash
 smart-contracts/
 ```
