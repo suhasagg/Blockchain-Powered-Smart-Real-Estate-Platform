@@ -1,5 +1,6 @@
 import { useCallback, useEffect, useMemo, useState } from 'react';
 import { ethers } from 'ethers';
+import { CONTRACT_ADDRESSES, INVESTMENT_ESCROW_ABI, ERC20_ABI, hasAddress } from '../contracts/contractConfig';
 
 const SUPPORTED_CHAINS = {
   1: { name: 'Ethereum', hex: '0x1' },
@@ -10,8 +11,11 @@ const SUPPORTED_CHAINS = {
 };
 
 const DEFAULT_REQUIRED_CHAIN_ID = Number(import.meta.env.VITE_REQUIRED_CHAIN_ID || 0); // 0 = allow any wallet network for demo
-const INVESTMENT_CONTRACT_ADDRESS = import.meta.env.VITE_INVESTMENT_CONTRACT_ADDRESS || '';
-const INVESTMENT_CONTRACT_ABI = ['function invest(uint256 propertyId,uint256 tokenQuantity) payable'];
+const INVESTMENT_CONTRACT_ADDRESS = CONTRACT_ADDRESSES.investmentEscrow;
+const PAYMENT_TOKEN_ADDRESS = CONTRACT_ADDRESSES.paymentToken;
+const NATIVE_WEI_PER_SHARE = import.meta.env.VITE_NATIVE_WEI_PER_SHARE || '0'; // example: 1000000000000000 = 0.001 ETH/MATIC per share
+const TOKEN_DECIMALS = Number(import.meta.env.VITE_PAYMENT_TOKEN_DECIMALS || 6);
+const TOKEN_UNITS_PER_SHARE = import.meta.env.VITE_TOKEN_UNITS_PER_SHARE || ''; // example: 10000000 for 10 USDC if decimals=6
 const DEMO_ADDRESS = '0xDemo000000000000000000000000000000000001';
 
 function getEthereum() {
@@ -207,15 +211,40 @@ export function useWallet() {
       }
       setSignature(signed);
 
-      if (INVESTMENT_CONTRACT_ADDRESS && ethers.utils.isAddress(INVESTMENT_CONTRACT_ADDRESS)) {
+      if (hasAddress(INVESTMENT_CONTRACT_ADDRESS)) {
         setTxState('submitted_onchain');
-        const contract = new ethers.Contract(INVESTMENT_CONTRACT_ADDRESS, INVESTMENT_CONTRACT_ABI, signer);
-        const tx = await contract.invest(property.id, quantity, { value: 0 });
+        const contract = new ethers.Contract(INVESTMENT_CONTRACT_ADDRESS, INVESTMENT_ESCROW_ABI, signer);
+
+        let tx;
+        // If a payment token address is configured, approve the escrow and call investWithToken().
+        // Otherwise call investNative() with optional native value from VITE_NATIVE_WEI_PER_SHARE.
+        if (hasAddress(PAYMENT_TOKEN_ADDRESS)) {
+          const token = new ethers.Contract(PAYMENT_TOKEN_ADDRESS, ERC20_ABI, signer);
+          const unitsPerShare = TOKEN_UNITS_PER_SHARE
+            ? ethers.BigNumber.from(TOKEN_UNITS_PER_SHARE)
+            : ethers.utils.parseUnits(String(property.tokenPrice || 0), TOKEN_DECIMALS);
+          const totalTokenAmount = unitsPerShare.mul(ethers.BigNumber.from(quantity));
+          const allowance = await token.allowance(signerAddress, INVESTMENT_CONTRACT_ADDRESS);
+          if (allowance.lt(totalTokenAmount)) {
+            const approveTx = await token.approve(INVESTMENT_CONTRACT_ADDRESS, totalTokenAmount);
+            setTxHash(approveTx.hash);
+            setTxState('pending_confirmation');
+            await approveTx.wait(1);
+            setTxState('submitted_onchain');
+          }
+          tx = await contract.investWithToken(property.id, quantity);
+        } else {
+          const weiPerShare = ethers.BigNumber.from(NATIVE_WEI_PER_SHARE || '0');
+          const value = weiPerShare.mul(ethers.BigNumber.from(quantity));
+          tx = await contract.investNative(property.id, quantity, { value });
+        }
+
         setTxHash(tx.hash);
         setTxState('pending_confirmation');
         const receipt = await tx.wait(1);
         setTxState('confirmed');
-        const finalReceipt = { mode: 'contract', propertyId: property.id, quantity, totalUsd, txHash: receipt.transactionHash, signature: signed, blockNumber: receipt.blockNumber, createdAt: new Date().toISOString() };
+        const finalReceipt = { mode: hasAddress(PAYMENT_TOKEN_ADDRESS) ? 'contract-usdc-investment' : 'contract-native-investment', contract: INVESTMENT_CONTRACT_ADDRESS, propertyId: property.id, quantity, totalUsd, txHash: receipt.transactionHash, signature: signed, blockNumber: receipt.blockNumber, createdAt: new Date().toISOString() };
+        localStorage.setItem('realfraction:lastInvestmentIntent', JSON.stringify(finalReceipt));
         setInvestmentReceipt(finalReceipt);
         return finalReceipt;
       }

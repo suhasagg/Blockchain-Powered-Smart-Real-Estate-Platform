@@ -1,8 +1,19 @@
-# RealFraction — Blockchain-Powered Smart Real Estate Platform
+# EstateFi — Blockchain-Powered Smart Real Estate Platform
 
-Demo video - https://www.loom.com/share/fa1d5210ad10401a896be62b197f8a52
+EstateFi is a refined Web3 real estate investment website built from the supplied MVP and upgraded with the features requested across the three attached documents. The new version modernizes the layout and adds product sections for fractional investment, NFT property ownership, wallet flow, rental payouts, secondary marketplace liquidity, compliance, admin operations, event indexing, AI recommendations, and a production roadmap.
 
-RealFraction is a refined Web3 real estate investment website. This version modernizes the layout and adds product sections for fractional investment, NFT property ownership, wallet flow, rental payouts, secondary marketplace liquidity, compliance, admin operations, event indexing, AI recommendations, and a production roadmap.
+## What changed in this ZIP
+
+### UI / layout refinement
+
+- Rebranded the website from `RoyalCity` to `RealFraction`.
+- Added a premium glassmorphism visual language, softer cards, stronger spacing, improved hero section, cleaner typography and better CTA hierarchy.
+- Added sticky blurred navigation and new top-level routes.
+- Added route-level transitions using `AnimatePresence`.
+- Added animated funding progress bars.
+- Improved the 3D model loading screen from plain `Please wait...` to a branded 3D viewer loader.
+- Added `prefers-reduced-motion` CSS support for accessibility.
+- Improved property cards with ROI, chain, risk, token price, available tokens, smart-home NFT access badges and funding progress.
 
 ### New frontend pages
 
@@ -255,9 +266,33 @@ npm run dev:full
 npm run build
 ```
 
+## Files added or heavily modified
+
+```text
+src/data/platform.js
+src/hooks/useWallet.js
+src/components/ui.jsx
+src/components/layout/Navbar.jsx
+src/components/layout/Footer.jsx
+src/pages/Home.jsx
+src/pages/Properties.jsx
+src/pages/PropertyDetail.jsx
+src/pages/Dashboard.jsx
+src/pages/Marketplace.jsx
+src/pages/Admin.jsx
+src/pages/Roadmap.jsx
+src/pages/Property3D.jsx
+src/App.jsx
+src/index.css
+server/app.js
+server/server.js
+server/config/config.env.example
+README.md
+```
+
 ## Important production notes
 
-Before using it for real investments, add:
+This ZIP is a strong UI and architecture upgrade, but it is still a frontend/demo implementation. Before using it for real investments, add:
 
 - Real wallet provider integration.
 - Real smart contracts.
@@ -320,3 +355,124 @@ Troubleshooting:
 - If the wrong-network prompt fails, manually add/switch to the configured chain.
 - If the user rejects the signature, the UI shows `User rejected signature`.
 - If no contract address is configured, the app intentionally uses signed investment-intent demo mode.
+
+---
+
+## Integrated Smart Contracts
+
+This ZIP now includes a full Hardhat smart-contract workspace in:
+
+```bash
+smart-contracts/
+```
+
+### Contracts included
+
+| Contract | Purpose |
+|---|---|
+| `PropertyNFT.sol` | ERC-721 NFT representing the unique legal/ownership record for a property. |
+| `PropertyShareToken.sol` | ERC-1155 fractional ownership shares per property. |
+| `PropertyFactory.sol` | Creates property records, mints ownership NFT, and manages share minting. |
+| `InvestmentEscrow.sol` | Primary investment contract. Supports native-token investment and ERC20/USDC investment. |
+| `SecondaryMarketplace.sol` | Lets investors list, buy, and cancel fractional property-share listings. |
+| `RentalDistribution.sol` | Deposits rental income and allows token holders to claim proportional payout. |
+| `DocumentRegistry.sol` | Registers legal/title/valuation/audit document hashes and URIs. |
+| `PlatformToken.sol` | Optional utility/reward/governance token for the ecosystem. |
+| `MockUSDC.sol` | Local/testnet stablecoin mock for development. |
+
+### Frontend integration added
+
+The investment page now imports contract config from:
+
+```bash
+src/contracts/contractConfig.js
+```
+
+The wallet hook was updated in:
+
+```bash
+src/hooks/useWallet.js
+```
+
+When `VITE_INVESTMENT_ESCROW_ADDRESS` is configured, the **Sign Investment Transaction** button performs:
+
+```text
+Connect wallet
+→ sign investment intent message
+→ if VITE_PAYMENT_TOKEN_ADDRESS is empty: call InvestmentEscrow.investNative(propertyId, shares)
+→ if VITE_PAYMENT_TOKEN_ADDRESS is set: approve ERC20 + call InvestmentEscrow.investWithToken(propertyId, shares)
+→ show transaction hash and receipt
+```
+
+When no contract address is configured, the same button still works in demo mode by creating a signed investment intent receipt.
+
+### Install and run frontend
+
+```bash
+npm install
+npm run dev
+```
+
+### Install and run contracts
+
+```bash
+npm run contracts:install
+npm run contracts:compile
+npm run contracts:test
+```
+
+### Start local Hardhat chain
+
+Open terminal 1:
+
+```bash
+npm run contracts:node
+```
+
+Open terminal 2:
+
+```bash
+npm run contracts:deploy
+```
+
+After deploy, copy the printed addresses into `.env`:
+
+```env
+VITE_REQUIRED_CHAIN_ID=31337
+VITE_PROPERTY_FACTORY_ADDRESS=0x...
+VITE_INVESTMENT_ESCROW_ADDRESS=0x...
+VITE_PROPERTY_SHARE_TOKEN_ADDRESS=0x...
+VITE_SECONDARY_MARKETPLACE_ADDRESS=0x...
+VITE_RENTAL_DISTRIBUTION_ADDRESS=0x...
+VITE_DOCUMENT_REGISTRY_ADDRESS=0x...
+VITE_PLATFORM_TOKEN_ADDRESS=0x...
+VITE_PAYMENT_TOKEN_ADDRESS=0x... # MockUSDC address for ERC20 flow, or empty for native flow
+VITE_NATIVE_WEI_PER_SHARE=0
+```
+
+Then restart frontend:
+
+```bash
+npm run dev
+```
+
+### MetaMask local chain setup
+
+Add local Hardhat network:
+
+```text
+Network name: Hardhat Local
+RPC URL: http://127.0.0.1:8545
+Chain ID: 31337
+Currency symbol: ETH
+```
+
+Import one of the Hardhat test accounts printed by `npm run contracts:node` into MetaMask.
+
+### Important notes
+
+- The frontend can run without deployed contracts using demo signed receipts.
+- Real on-chain investment requires deployed contracts and correct `.env` addresses.
+- ERC20/USDC investment requires the investor to hold the payment token and approve escrow.
+- Native investment uses `VITE_NATIVE_WEI_PER_SHARE` to calculate `msg.value`.
+- Contract compilation may require internet on first run because Hardhat downloads the Solidity compiler.

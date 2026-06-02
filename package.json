@@ -54,7 +54,12 @@
     "start": "npm run dev",
     "server": "node server/server.js",
     "dev:full": "concurrently \"npm run dev\" \"npm run server\"",
-    "check": "npm run build"
+    "check": "npm run build",
+    "contracts:install": "cd smart-contracts && npm install",
+    "contracts:compile": "cd smart-contracts && npm run compile",
+    "contracts:test": "cd smart-contracts && npm test",
+    "contracts:node": "cd smart-contracts && npm run node",
+    "contracts:deploy": "cd smart-contracts && npm run deploy"
   },
   "eslintConfig": {
     "extends": [
