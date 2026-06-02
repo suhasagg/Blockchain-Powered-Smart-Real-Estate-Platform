@@ -1,10 +1,8 @@
 # EstateFi — Blockchain-Powered Smart Real Estate Platform
 
-EstateFi is a refined Web3 real estate investment website. The new version modernizes the layout and adds product sections for fractional investment, NFT property ownership, wallet flow, rental payouts, secondary marketplace liquidity, compliance, admin operations, event indexing, AI recommendations, and a production roadmap.
+EstateFi is a refined Web3 real estate investment website.
 
-
-
-### New frontend pages
+### frontend pages
 
 | Route | Purpose |
 |---|---|
